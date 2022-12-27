@@ -31,7 +31,6 @@ There are two test suites. One with tradition tests and the other one is visual 
 ## Run tests with chrome driver on client computer
 
 This is config to run tests in sequence.
-
     <pre>
     npm run wdio
     </pre>
