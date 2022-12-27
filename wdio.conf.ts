@@ -1,3 +1,4 @@
+import { join } from 'path';
 import type { Options } from '@wdio/types'
 
 export const config: Options.Testrunner = {
@@ -76,7 +77,7 @@ export const config: Options.Testrunner = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: 'chrome',
         'goog:chromeOptions': {
@@ -96,7 +97,7 @@ export const config: Options.Testrunner = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'warn',
     //
     // Set specific log levels per logger
     // loggers:
@@ -136,7 +137,20 @@ export const config: Options.Testrunner = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
+    services: [
+        'chromedriver',
+        ['image-comparison',
+            {
+                baselineFolder: join(process.cwd(), './baseLineImages/'),
+                formatImageName: '{tag}-{logName}',
+                screenshotPath: join(process.cwd(), './actualImages/'),
+                savePerInstance: true,
+                autoSaveBaseline: true,
+                blockOutStatusBar: true,
+                blockOutToolBar: true,
+            }
+        ]
+    ],
     // services: ['docker'],
 
     // Framework you want to run your specs with.

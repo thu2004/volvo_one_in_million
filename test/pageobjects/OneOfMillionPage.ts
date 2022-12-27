@@ -25,6 +25,23 @@ class OneOfMillionPage extends Page {
     public async open() {
         return super.open('intl/v/car-safety/a-million-more');
     }
+
+    public async openAndAcceptDisclaimer() {
+        await browser.sendCommand("Page.addScriptToEvaluateOnNewDocument",
+            { "source": "delete Object.getPrototypeOf(navigator).webdriver" })
+
+        await this.open()
+        await browser.pause(1000)
+
+        const alertDialogs = await $$('[role=alertdialog]')
+        if (alertDialogs.length > 0) {
+            const button = await alertDialogs[0].$('button=Accept')
+            await button.click()
+            await browser.pause(1000)
+            const dlgs = await $$('[role=alertdialog]')
+            expect(dlgs).toBeElementsArrayOfSize(0)
+        }
+    }
 }
 
 export default new OneOfMillionPage();

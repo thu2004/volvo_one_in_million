@@ -3,27 +3,7 @@ import OneOfMillionPage from '../pageobjects/OneOfMillionPage.js'
 describe('abc', () => {
 
     before(async () => {
-        await browser.sendCommand("Page.addScriptToEvaluateOnNewDocument",
-            { "source": "delete Object.getPrototypeOf(navigator).webdriver" })
-
-        await OneOfMillionPage.open()
-        await browser.pause(1000)
-
-        const alertDialogs = await $$('[role=alertdialog]')
-        if (alertDialogs.length > 0) {
-            const button = await alertDialogs[0].$('button=Accept')
-            await button.click()
-            await browser.pause(1000)
-            const dlgs = await $$('[role=alertdialog]')
-            expect(dlgs).toBeElementsArrayOfSize(0)
-        }
-    })
-
-    beforeEach(async () => {
-        // browser.refresh()
-    })
-
-    after(async () => {
+        await OneOfMillionPage.openAndAcceptDisclaimer()
     })
 
     it('should display welcome section', async () => {
