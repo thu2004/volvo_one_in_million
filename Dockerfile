@@ -50,5 +50,5 @@ ADD . /app
 
 RUN npm install
 
-CMD npm run wdio_selenium_grid
+CMD npm run wdio-selenium-grid
 

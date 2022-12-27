@@ -7,68 +7,56 @@ describe('abc', () => {
     })
 
     it('should display welcome section', async () => {
-        expect(OneOfMillionPage.welcome.isExisting)
+        await expect(OneOfMillionPage.introHeader).toBeDisplayed()
     })
 
     describe('Intro video', () => {
         it('the "watch the story" button is showed', async () => {
-            const video = await $('#Video-1')
-            const button = await video.$('button=watch the story')
-            expect(button).toBeDisplayed()
+            await expect(OneOfMillionPage.introVideoWatchButton).toBeDisplayed()
         })
 
         it('the pause button is showed when load', async () => {
-            const video = await $('#Video-1 video')
-            // video.scrollIntoView()
-            browser.scroll(0, -5500)
-            const button = await video.parent.$('button')
-            browser.execute(function (elem: any) {
-                elem.focus();
-            }, button);
-            expect(button).toBeDisplayed()
+            const video = await OneOfMillionPage.introVideo
+            await OneOfMillionPage.scrollIntoView(video)
+            const button = await video.parent.$('//button[@aria-label="pause"]')
+            await expect(button).toBeDisplayed()
         })
 
         it('when click on pause button, the play button is showed', async () => {
-            const video = await $('#Video-1 video')
-            const button = await $('#Video-1 button button') //  video.parent.$('button')
-            browser.execute(function (elem: any) {
-                elem.focus();
-            }, button);
-            await button.click()
-            const playButton = await video.parent.$('button=play')
-            expect(playButton).toBeDisplayed()
+            const video = await OneOfMillionPage.introVideo
+            await OneOfMillionPage.scrollIntoView(video)
+            const pauseButton = await video.parent.$('//button[@aria-label="pause"]')
+            await pauseButton.click()
+            const playButton = await video.parent.$('//button[@aria-label="play"]')
+            await expect(playButton).toBeDisplayed()
         })
 
         it('when click on the button and the youtube video is showed', async () => {
-            const video = await $('#Video-1')
-            const button = await video.$('button=watch the story')
-            browser.execute(function (elem: any) {
-                elem.focus();
-            }, button);
+            const video = await OneOfMillionPage.introVideo
+            const button = await OneOfMillionPage.introVideoWatchButton
+            await OneOfMillionPage.scrollIntoView(video)
             await button.click()
-            const frame = await video.$('iframe')
-            expect(frame).toHaveAttributeContaining('src', "www.youtube.com")
-            await browser.pause(5000)
+            await expect(OneOfMillionPage.introYoutubeVideo).toHaveAttributeContaining('src', "www.youtube.com")
+            await browser.pause(3000)
         })
     })
 
     it('should have 4 testimony with working video', async () => {
-        await browser.scroll(0, 2000)
-        await browser.pause(1000)
-        let testimonials = await $$('[data-autoid="videoTestimonials:container"]')
+        let testimonials = await OneOfMillionPage.testimonials
         expect(testimonials).toBeElementsArrayOfSize(4)
 
         for (let testimonial of testimonials) {
+            await OneOfMillionPage.scrollIntoView(testimonial)
+            await browser.pause(1000)
+
             let button = await testimonial.$('button')
-            await browser.execute(function (elem: any) {
-                elem.focus();
-            }, button);
             await button.click()
             await browser.pause(1000)
+
             let vv = await testimonial.$('video source')
-            let src = await vv.getAttribute('src')
-            // expect(vv).toHaveAttributeContaining('srcxx', "xxx")
+            expect(vv).toHaveAttributeContaining('src', ".mp4")
             await browser.pause(1000)
+
             let video = await testimonial.$('video')
             await video.click()
         }

@@ -1,5 +1,5 @@
-kubectl delete deployment selenium-hub
-kubectl delete deployment selenium-node-chrome
-kubectl delete deployment selenium-node-firefox
-kubectl delete deployment selenium-python
-kubectl delete svc selenium-hub
+#!/bin/bash
+
+minikube kubectl -- delete deployment selenium-hub
+minikube kubectl -- delete deployment selenium-node-chrome
+minikube kubectl -- delete svc selenium-hub

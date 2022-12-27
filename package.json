@@ -15,11 +15,16 @@
     "wdio-image-comparison-service": "^5.0.2"
   },
   "scripts": {
-    "test": "npx wdio run wdio.conf.ts",
     "wdio": "wdio run ./wdio.conf.ts",
-    "wdio-docker": "docker run -ti --net=host -v $(pwd)/allure-results:/app/allure-results wdio_one_of_million",
+    "wdio-docker": "docker run -ti --net=host -v $(pwd)/baseLineImages:/app/baseLineImages -v $(pwd)/actualImages:/app/actualImages -v $(pwd)/allure-results:/app/allure-results wdio_one_of_million",
     "wdio-selenium-grid": "wdio run ./wdio.conf.selenium_grid.ts",
     "build-docker": "docker build -t wdio_one_of_million .",
-    "start-selenium-grid": "docker compose -f selenium-4-grid.yml up"
+    "start-selenium-grid": "docker compose -f selenium-4-grid.yml up",
+    "stop-selenium-grid": "docker compose -f selenium-4-grid.yml down",
+    "start-k8-selenium-grid": "./kubernetes/deploy.sh",
+    "stop-k8-selenium-grid": "./kubernetes/teardown.sh",
+    "portforwarding-k8": "./kubernetes/portforwarding.sh",
+    "generate-report": "allure generate",
+    "open-report": "allure open"
   }
 }

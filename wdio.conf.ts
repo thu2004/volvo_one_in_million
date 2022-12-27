@@ -82,7 +82,6 @@ export const config: Options.Testrunner = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: ["user-agent=...", "--disable-gpu", "--window-size=1440,1224"]
-            // args: ["--headless", "user-agent=...", "--disable-gpu", "--window-size=1440,735"]
         },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
